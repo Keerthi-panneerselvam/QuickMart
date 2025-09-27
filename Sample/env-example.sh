@@ -1,0 +1,74 @@
+# QuickMart Environment Variables
+
+# Frontend Environment Variables
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_RAZORPAY_KEY=rzp_test_xxxxxxxxxx
+REACT_APP_ENVIRONMENT=development
+REACT_APP_SENTRY_DSN=your_sentry_dsn_here
+REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_key
+REACT_APP_FIREBASE_CONFIG=your_firebase_config
+
+# Backend Environment Variables (create backend/.env)
+NODE_ENV=development
+PORT=5000
+CLIENT_URL=http://localhost:3000
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/quickmart
+REDIS_URL=redis://localhost:6379
+
+# Authentication
+JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
+JWT_REFRESH_SECRET=your_refresh_token_secret_here
+SESSION_SECRET=your_session_secret_here
+
+# Payment Gateway
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+RAZORPAY_WEBHOOK_SECRET=your_webhook_secret
+
+# SMS Service
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
+
+# Alternative SMS Service
+MSG91_API_KEY=your_msg91_api_key
+MSG91_SENDER_ID=your_sender_id
+
+# Email Service
+SENDGRID_API_KEY=your_sendgrid_api_key
+SENDGRID_FROM_EMAIL=noreply@quickmart.com
+
+# File Upload
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+# Google Services
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+GOOGLE_PLACES_API_KEY=your_google_places_api_key
+
+# Push Notifications
+FIREBASE_SERVER_KEY=your_firebase_server_key
+FIREBASE_PROJECT_ID=your_firebase_project_id
+
+# Analytics
+GOOGLE_ANALYTICS_ID=your_ga_tracking_id
+MIXPANEL_TOKEN=your_mixpanel_token
+
+# Error Tracking
+SENTRY_DSN=your_sentry_dsn_for_backend
+
+# External APIs
+DELIVERY_PARTNER_API_KEY=your_delivery_api_key
+INVENTORY_API_URL=your_inventory_api_url
+
+# Development
+DEBUG=quickmart:*
+LOG_LEVEL=debug
+
+# Production
+ENABLE_RATE_LIMITING=true
+ENABLE_CORS=true
+ENABLE_COMPRESSION=true
