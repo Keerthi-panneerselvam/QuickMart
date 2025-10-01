@@ -61,14 +61,18 @@ const HomeScreen = ({ navigation }: any) => {
   // Mock data
   const mockCategories: Category[] = [
     { category_id: 0, name: 'All', icon_url: '', slug: 'all' },
-    { category_id: 1, name: 'Kanjak', icon_url: '🥬', slug: 'kanjak' },
-    { category_id: 2, name: 'Cafe', icon_url: '☕', slug: 'cafe' },
-    { category_id: 3, name: 'Pharma', icon_url: '💊', slug: 'pharma' },
-    { category_id: 4, name: 'Fresh', icon_url: '🥕', slug: 'fresh' },
-    { category_id: 5, name: 'Electronics', icon_url: '📱', slug: 'electronics' },
-    { category_id: 6, name: 'Home', icon_url: '🏠', slug: 'home' },
-    { category_id: 7, name: 'Beauty', icon_url: '💄', slug: 'beauty' },
-    { category_id: 8, name: 'Fashion', icon_url: '👕', slug: 'fashion' },
+    { category_id: 1, name: 'Grocery', icon_url: '🛒', slug: 'grocery-kitchen' },
+    { category_id: 2, name: 'Snacks', icon_url: '🍿', slug: 'snacks-drinks' },
+    { category_id: 3, name: 'Beauty', icon_url: '💄', slug: 'beauty-personal-care' },
+    { category_id: 4, name: 'Household', icon_url: '🏠', slug: 'household-essentials' },
+    { category_id: 5, name: 'Fresh', icon_url: '🥬', slug: 'fresh-vegetables' },
+    { category_id: 6, name: 'Dairy', icon_url: '🥛', slug: 'dairy-eggs' },
+    { category_id: 7, name: 'Electronics', icon_url: '📱', slug: 'electronics' },
+    { category_id: 8, name: 'Kitchen', icon_url: '🍳', slug: 'home-kitchen' },
+    { category_id: 9, name: 'Fashion', icon_url: '👕', slug: 'fashion' },
+    { category_id: 10, name: 'Pharmacy', icon_url: '💊', slug: 'pharmacy' },
+    { category_id: 11, name: 'Baby Care', icon_url: '👶', slug: 'baby-care' },
+    { category_id: 12, name: 'Pet Care', icon_url: '🐾', slug: 'pet-care' },
   ];
 
   const mockBanners: Banner[] = [
