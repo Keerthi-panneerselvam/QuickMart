@@ -1,80 +1,146 @@
+// ProductDetailsScreen.tsx
 import React, { useState } from 'react';
-import { 
-  ArrowLeft, 
-  Share2, 
-  Search, 
-  Clock, 
-  Star, 
-  ChevronRight, 
-  Plus, 
-  Minus, 
-  ShoppingCart,
-  Package,
-  Zap,
-  Tag,
-  Heart
-} from 'lucide-react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ProductDetailsScreen = () => {
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+interface Product {
+  product_id: number;
+  name: string;
+  images: string[];
+  rating: number;
+  total_ratings: number;
+  offer_price: number;
+  mrp_price: number;
+  discount_percentage: number;
+  quantity_unit: string;
+  delivery_time_mins: number;
+  highlights: string[];
+  description: string;
+  nutritional_info: Record<string, string>;
+  storage_instructions: string;
+  manufacturer_name: string;
+  country_of_origin: string;
+  best_before: string;
+}
+
+interface Offer {
+  offer_id: number;
+  offer_code: string;
+  title: string;
+  description: string;
+}
+
+interface SimilarProduct {
+  product_id: number;
+  name: string;
+  image_url: string;
+  offer_price: number;
+  quantity_unit: string;
+}
+
+const ProductDetailsScreen = ({ route, navigation }: any) => {
   const [quantity, setQuantity] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [activeTab, setActiveTab] = useState('highlights');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'highlights' | 'info'>('highlights');
 
-  const product = {
-    id: 1,
+  // Mock data - Replace with API call
+  const product: Product = {
+    product_id: 1,
     name: 'Fresh Tomatoes',
-    images: ['🍅', '🍅', '🍅'],
+    images: [
+      'https://via.placeholder.com/400/FF6B6B/FFFFFF?text=Tomato+1',
+      'https://via.placeholder.com/400/FF6B6B/FFFFFF?text=Tomato+2',
+      'https://via.placeholder.com/400/FF6B6B/FFFFFF?text=Tomato+3',
+    ],
     rating: 4.5,
-    totalRatings: 120,
-    offerPrice: 45,
-    mrpPrice: 50,
-    discount: 10,
-    unit: '500g',
-    deliveryMins: 8,
+    total_ratings: 120,
+    offer_price: 45,
+    mrp_price: 50,
+    discount_percentage: 10,
+    quantity_unit: '500g',
+    delivery_time_mins: 8,
     highlights: [
       'Farm fresh tomatoes',
       'No pesticides used',
       'Organically grown',
       'Rich in vitamins A and C',
-      'Perfect for salads and cooking'
+      'Perfect for salads and cooking',
     ],
-    description: 'Premium quality farm fresh tomatoes, carefully selected for freshness and taste. These tomatoes are perfect for salads, curries, and all your cooking needs.',
-    nutritionalInfo: {
-      calories: '18 kcal',
-      protein: '0.9g',
-      carbs: '3.9g',
-      fat: '0.2g',
-      fiber: '1.2g'
+    description:
+      'Premium quality farm fresh tomatoes, carefully selected for freshness and taste. These tomatoes are perfect for salads, curries, and all your cooking needs.',
+    nutritional_info: {
+      Calories: '18 kcal',
+      Protein: '0.9g',
+      Carbs: '3.9g',
+      Fat: '0.2g',
+      Fiber: '1.2g',
     },
-    storageInfo: 'Store in a cool, dry place. Best consumed within 3-4 days.',
-    manufacturer: 'FreshFarm Pvt Ltd',
-    countryOfOrigin: 'India',
-    bestBefore: '5 days from delivery'
+    storage_instructions: 'Store in a cool, dry place. Best consumed within 3-4 days.',
+    manufacturer_name: 'FreshFarm Pvt Ltd',
+    country_of_origin: 'India',
+    best_before: '5 days from delivery',
   };
 
-  const offers = [
+  const offers: Offer[] = [
     {
-      id: 1,
-      code: 'FRESH10',
+      offer_id: 1,
+      offer_code: 'FRESH10',
       title: '10% off on Fresh Vegetables',
-      description: 'Use code FRESH10 at checkout'
+      description: 'Use code FRESH10 at checkout',
     },
     {
-      id: 2,
-      code: 'FLAT125',
+      offer_id: 2,
+      offer_code: 'FLAT125',
       title: 'Flat ₹125 OFF',
-      description: 'On orders above ₹499'
-    }
+      description: 'On orders above ₹499',
+    },
   ];
 
-  const similarProducts = [
-    { id: 2, name: 'Fresh Onions', image: '🧅', price: 35, unit: '1kg' },
-    { id: 3, name: 'Green Capsicum', image: '🫑', price: 55, unit: '500g' },
-    { id: 4, name: 'Fresh Potatoes', image: '🥔', price: 25, unit: '1kg' },
-    { id: 5, name: 'Fresh Carrots', image: '🥕', price: 40, unit: '500g' },
+  const similarProducts: SimilarProduct[] = [
+    {
+      product_id: 2,
+      name: 'Fresh Onions',
+      image_url: 'https://via.placeholder.com/150/FFD93D/FFFFFF?text=Onion',
+      offer_price: 35,
+      quantity_unit: '1kg',
+    },
+    {
+      product_id: 3,
+      name: 'Green Capsicum',
+      image_url: 'https://via.placeholder.com/150/6BCB77/FFFFFF?text=Capsicum',
+      offer_price: 55,
+      quantity_unit: '500g',
+    },
+    {
+      product_id: 4,
+      name: 'Fresh Potatoes',
+      image_url: 'https://via.placeholder.com/150/A0826D/FFFFFF?text=Potato',
+      offer_price: 25,
+      quantity_unit: '1kg',
+    },
+    {
+      product_id: 5,
+      name: 'Fresh Carrots',
+      image_url: 'https://via.placeholder.com/150/FF9F43/FFFFFF?text=Carrot',
+      offer_price: 40,
+      quantity_unit: '500g',
+    },
   ];
 
+  // Handlers
   const handleAddToCart = () => {
     if (quantity === 0) {
       setQuantity(1);
@@ -95,297 +161,813 @@ const ProductDetailsScreen = () => {
     setIsFavorite(!isFavorite);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <ArrowLeft size={24} className="text-gray-700" />
-          </button>
-          <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <Search size={22} className="text-gray-700" />
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <Share2 size={22} className="text-gray-700" />
-            </button>
-          </div>
-        </div>
-      </div>
+  const handleBack = () => {
+    navigation.goBack();
+  };
 
-      {/* Main Content */}
-      <div className="max-w-md mx-auto">
-        {/* Product Images */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 relative">
-          <button 
-            onClick={toggleFavorite}
-            className="absolute top-4 right-4 z-10 p-2 bg-white rounded-full shadow-lg hover:scale-110 transition-transform"
+  const handleShare = () => {
+    console.log('Share product');
+  };
+
+  const handleSearch = () => {
+    navigation.navigate('Search');
+  };
+
+  const handleCartPress = () => {
+    navigation.navigate('Cart');
+  };
+
+  // Render Components
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
+        <Icon name="arrow-left" size={24} color="#333" />
+      </TouchableOpacity>
+      <View style={styles.headerRight}>
+        <TouchableOpacity onPress={handleSearch} style={styles.headerButton}>
+          <Icon name="magnify" size={24} color="#333" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleShare} style={styles.headerButton}>
+          <Icon name="share-variant" size={24} color="#333" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderImageGallery = () => (
+    <View style={styles.imageGallery}>
+      <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteButton}>
+        <Icon
+          name={isFavorite ? 'heart' : 'heart-outline'}
+          size={24}
+          color={isFavorite ? '#FF5252' : '#666'}
+        />
+      </TouchableOpacity>
+
+      <View style={styles.mainImageContainer}>
+        <Image
+          source={{ uri: product.images[selectedImageIndex] }}
+          style={styles.mainImage}
+          resizeMode="contain"
+        />
+      </View>
+
+      <View style={styles.thumbnailContainer}>
+        {product.images.map((img, idx) => (
+          <TouchableOpacity
+            key={idx}
+            onPress={() => setSelectedImageIndex(idx)}
+            style={[
+              styles.thumbnail,
+              selectedImageIndex === idx && styles.thumbnailActive,
+            ]}
           >
-            <Heart 
-              size={20} 
-              className={isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'} 
-            />
-          </button>
-          
-          <div className="h-80 flex items-center justify-center">
-            <span className="text-9xl">{product.images[selectedImage]}</span>
-          </div>
+            <Image source={{ uri: img }} style={styles.thumbnailImage} resizeMode="cover" />
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
 
-          {/* Image Thumbnails */}
-          <div className="flex justify-center gap-2 pb-4">
-            {product.images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedImage(idx)}
-                className={`w-16 h-16 rounded-lg border-2 flex items-center justify-center text-3xl ${
-                  selectedImage === idx 
-                    ? 'border-green-500 bg-white' 
-                    : 'border-gray-200 bg-white opacity-60'
-                }`}
-              >
-                {img}
-              </button>
-            ))}
-          </div>
-        </div>
+  const renderProductInfo = () => (
+    <View style={styles.productInfo}>
+      <View style={styles.deliveryBadge}>
+        <Icon name="clock-outline" size={14} color="#4CAF50" />
+        <Text style={styles.deliveryText}>
+          Estimated delivery: {product.delivery_time_mins} mins
+        </Text>
+      </View>
 
-        {/* Product Info */}
-        <div className="bg-white px-4 py-4">
-          {/* Delivery Time */}
-          <div className="flex items-center gap-1 bg-green-50 text-green-600 text-sm font-semibold px-3 py-1.5 rounded-lg w-fit mb-3">
-            <Clock size={14} />
-            <span>Estimated delivery: {product.deliveryMins} mins</span>
-          </div>
+      <Text style={styles.productName}>{product.name}</Text>
 
-          {/* Product Name */}
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h1>
-          
-          {/* Rating */}
-          <div className="flex items-center gap-2 mb-3">
-            <div className="flex items-center gap-1 bg-green-500 text-white px-2 py-1 rounded">
-              <Star size={14} fill="white" />
-              <span className="text-sm font-semibold">{product.rating}</span>
-            </div>
-            <span className="text-sm text-gray-500">({product.totalRatings} ratings)</span>
-          </div>
+      <View style={styles.ratingContainer}>
+        <View style={styles.ratingBadge}>
+          <Icon name="star" size={14} color="#FFF" />
+          <Text style={styles.ratingText}>{product.rating}</Text>
+        </View>
+        <Text style={styles.ratingCount}>({product.total_ratings} ratings)</Text>
+      </View>
 
-          {/* Weight */}
-          <p className="text-gray-600 mb-4">{product.unit}</p>
+      <Text style={styles.productUnit}>{product.quantity_unit}</Text>
 
-          {/* Price */}
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl font-bold text-gray-800">₹{product.offerPrice}</span>
-            <span className="text-lg text-gray-400 line-through">₹{product.mrpPrice}</span>
-            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-              {product.discount}% OFF
-            </span>
-          </div>
-          <p className="text-xs text-gray-500 mb-4">Incl. of all taxes</p>
+      <View style={styles.priceContainer}>
+        <Text style={styles.offerPrice}>₹{product.offer_price}</Text>
+        <Text style={styles.mrpPrice}>₹{product.mrp_price}</Text>
+        <View style={styles.discountBadge}>
+          <Text style={styles.discountText}>{product.discount_percentage}% OFF</Text>
+        </View>
+      </View>
 
-          {/* Offers */}
-          <div className="mb-4">
-            <button className="flex items-center justify-between w-full text-green-600 font-semibold py-2">
-              <div className="flex items-center gap-2">
-                <Tag size={18} />
-                <span>View all offers</span>
-              </div>
-              <ChevronRight size={18} />
-            </button>
-            <div className="space-y-2 mt-2">
-              {offers.map((offer) => (
-                <div key={offer.id} className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <div className="flex items-start gap-2">
-                    <Tag size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-sm text-gray-800">{offer.title}</p>
-                      <p className="text-xs text-gray-600">{offer.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <Text style={styles.taxText}>Incl. of all taxes</Text>
+    </View>
+  );
 
-          {/* Brand Link */}
-          <button className="text-green-600 font-semibold text-sm mb-4 hover:underline">
-            View all FreshFarm products →
-          </button>
+  const renderOffers = () => (
+    <View style={styles.offersSection}>
+      <TouchableOpacity style={styles.offersHeader}>
+        <View style={styles.offersHeaderLeft}>
+          <Icon name="tag-outline" size={18} color="#4CAF50" />
+          <Text style={styles.offersHeaderText}>View all offers</Text>
+        </View>
+        <Icon name="chevron-right" size={18} color="#666" />
+      </TouchableOpacity>
 
-          {/* Tags */}
-          <div className="flex items-center gap-2 flex-wrap mb-6">
-            <div className="flex items-center gap-1 bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">
-              <Package size={12} />
-              <span>No return/exchange</span>
-            </div>
-            <div className="flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-              <Zap size={12} />
-              <span>Fast delivery</span>
-            </div>
-          </div>
+      <View style={styles.offersList}>
+        {offers.map((offer) => (
+          <View key={offer.offer_id} style={styles.offerCard}>
+            <Icon name="tag" size={16} color="#4CAF50" />
+            <View style={styles.offerContent}>
+              <Text style={styles.offerTitle}>{offer.title}</Text>
+              <Text style={styles.offerDescription}>{offer.description}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
 
-          {/* Tabs */}
-          <div className="border-b border-gray-200 mb-4">
-            <div className="flex gap-6">
-              <button
-                onClick={() => setActiveTab('highlights')}
-                className={`pb-2 font-semibold text-sm ${
-                  activeTab === 'highlights'
-                    ? 'text-green-600 border-b-2 border-green-600'
-                    : 'text-gray-500'
-                }`}
-              >
-                Product Highlights
-              </button>
-              <button
-                onClick={() => setActiveTab('info')}
-                className={`pb-2 font-semibold text-sm ${
-                  activeTab === 'info'
-                    ? 'text-green-600 border-b-2 border-green-600'
-                    : 'text-gray-500'
-                }`}
-              >
-                Information
-              </button>
-            </div>
-          </div>
+  const renderTags = () => (
+    <View style={styles.tagsContainer}>
+      <TouchableOpacity style={styles.brandLink}>
+        <Text style={styles.brandLinkText}>View all FreshFarm products →</Text>
+      </TouchableOpacity>
 
-          {/* Tab Content */}
-          {activeTab === 'highlights' && (
-            <div className="space-y-3 mb-6">
-              {product.highlights.map((highlight, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0" />
-                  <p className="text-gray-700 text-sm">{highlight}</p>
-                </div>
-              ))}
-            </div>
-          )}
+      <View style={styles.tags}>
+        <View style={[styles.tag, styles.tagOrange]}>
+          <Icon name="package-variant" size={12} color="#F57C00" />
+          <Text style={styles.tagTextOrange}>No return/exchange</Text>
+        </View>
+        <View style={[styles.tag, styles.tagBlue]}>
+          <Icon name="flash" size={12} color="#2196F3" />
+          <Text style={styles.tagTextBlue}>Fast delivery</Text>
+        </View>
+      </View>
+    </View>
+  );
 
-          {activeTab === 'info' && (
-            <div className="space-y-4 mb-6">
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Description</h3>
-                <p className="text-sm text-gray-600">{product.description}</p>
-              </div>
+  const renderTabs = () => (
+    <View style={styles.tabsContainer}>
+      <View style={styles.tabsHeader}>
+        <TouchableOpacity
+          onPress={() => setActiveTab('highlights')}
+          style={[styles.tab, activeTab === 'highlights' && styles.tabActive]}
+        >
+          <Text
+            style={[styles.tabText, activeTab === 'highlights' && styles.tabTextActive]}
+          >
+            Product Highlights
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setActiveTab('info')}
+          style={[styles.tab, activeTab === 'info' && styles.tabActive]}
+        >
+          <Text style={[styles.tabText, activeTab === 'info' && styles.tabTextActive]}>
+            Information
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Nutritional Information (per 100g)</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {Object.entries(product.nutritionalInfo).map(([key, value]) => (
-                    <div key={key} className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs text-gray-500 capitalize">{key}</p>
-                      <p className="font-semibold text-gray-800">{value}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      <View style={styles.tabContent}>
+        {activeTab === 'highlights' ? renderHighlights() : renderInformation()}
+      </View>
+    </View>
+  );
 
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Storage Instructions</h3>
-                <p className="text-sm text-gray-600">{product.storageInfo}</p>
-              </div>
+  const renderHighlights = () => (
+    <View style={styles.highlightsContainer}>
+      {product.highlights.map((highlight, idx) => (
+        <View key={idx} style={styles.highlightItem}>
+          <View style={styles.highlightBullet} />
+          <Text style={styles.highlightText}>{highlight}</Text>
+        </View>
+      ))}
+    </View>
+  );
 
-              <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Manufacturer</span>
-                  <span className="font-semibold text-gray-800">{product.manufacturer}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Country of Origin</span>
-                  <span className="font-semibold text-gray-800">{product.countryOfOrigin}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Best Before</span>
-                  <span className="font-semibold text-gray-800">{product.bestBefore}</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+  const renderInformation = () => (
+    <View style={styles.informationContainer}>
+      <View style={styles.infoSection}>
+        <Text style={styles.infoSectionTitle}>Description</Text>
+        <Text style={styles.infoText}>{product.description}</Text>
+      </View>
 
-        {/* Similar Products */}
-        <div className="bg-white px-4 py-6 mt-2">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Similar Products</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {similarProducts.map((item) => (
-              <div key={item.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 h-32 flex items-center justify-center">
-                  <span className="text-5xl">{item.image}</span>
-                </div>
-                <div className="p-3">
-                  <p className="font-semibold text-sm text-gray-800 mb-1">{item.name}</p>
-                  <p className="text-xs text-gray-500 mb-2">{item.unit}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-gray-800">₹{item.price}</span>
-                    <button className="border-2 border-green-500 text-green-600 text-xs font-bold px-3 py-1 rounded-lg hover:bg-green-50">
-                      ADD
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <View style={styles.infoSection}>
+        <Text style={styles.infoSectionTitle}>Nutritional Information (per 100g)</Text>
+        <View style={styles.nutritionGrid}>
+          {Object.entries(product.nutritional_info).map(([key, value]) => (
+            <View key={key} style={styles.nutritionItem}>
+              <Text style={styles.nutritionLabel}>{key}</Text>
+              <Text style={styles.nutritionValue}>{value}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
 
-        {/* You Might Also Like */}
-        <div className="bg-white px-4 py-6 mt-2">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">You might also like</h2>
-          <div className="space-y-3">
-            {similarProducts.slice(0, 2).map((item) => (
-              <div key={`like-${item.id}`} className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 w-20 h-20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-4xl">{item.image}</span>
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-800">{item.name}</p>
-                  <p className="text-xs text-gray-500 mb-1">{item.unit}</p>
-                  <span className="font-bold text-gray-800">₹{item.price}</span>
-                </div>
-                <button className="border-2 border-green-500 text-green-600 text-xs font-bold px-4 py-2 rounded-lg hover:bg-green-50">
-                  ADD
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <View style={styles.infoSection}>
+        <Text style={styles.infoSectionTitle}>Storage Instructions</Text>
+        <Text style={styles.infoText}>{product.storage_instructions}</Text>
+      </View>
 
-      {/* Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
-          <button className="p-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
-            <ShoppingCart size={24} className="text-gray-700" />
-          </button>
-          
-          {quantity > 0 ? (
-            <div className="flex-1 flex items-center justify-between bg-green-500 text-white rounded-xl p-3">
-              <button 
-                onClick={decrementQuantity}
-                className="p-2 hover:bg-green-600 rounded-lg transition-colors"
-              >
-                <Minus size={20} />
-              </button>
-              <span className="font-bold text-lg">{quantity}</span>
-              <button 
-                onClick={incrementQuantity}
-                className="p-2 hover:bg-green-600 rounded-lg transition-colors"
-              >
-                <Plus size={20} />
-              </button>
-            </div>
-          ) : (
-            <button 
-              onClick={handleAddToCart}
-              className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl transition-colors"
-            >
-              Add to Cart
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+      <View style={styles.manufacturerInfo}>
+        <View style={styles.manufacturerRow}>
+          <Text style={styles.manufacturerLabel}>Manufacturer</Text>
+          <Text style={styles.manufacturerValue}>{product.manufacturer_name}</Text>
+        </View>
+        <View style={styles.manufacturerRow}>
+          <Text style={styles.manufacturerLabel}>Country of Origin</Text>
+          <Text style={styles.manufacturerValue}>{product.country_of_origin}</Text>
+        </View>
+        <View style={styles.manufacturerRow}>
+          <Text style={styles.manufacturerLabel}>Best Before</Text>
+          <Text style={styles.manufacturerValue}>{product.best_before}</Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderSimilarProducts = () => (
+    <View style={styles.similarSection}>
+      <Text style={styles.sectionTitle}>Similar Products</Text>
+      <View style={styles.similarGrid}>
+        {similarProducts.map((item) => (
+          <View key={item.product_id} style={styles.similarCard}>
+            <View style={styles.similarImageContainer}>
+              <Image
+                source={{ uri: item.image_url }}
+                style={styles.similarImage}
+                resizeMode="cover"
+              />
+            </View>
+            <View style={styles.similarInfo}>
+              <Text style={styles.similarName} numberOfLines={2}>
+                {item.name}
+              </Text>
+              <Text style={styles.similarUnit}>{item.quantity_unit}</Text>
+              <View style={styles.similarFooter}>
+                <Text style={styles.similarPrice}>₹{item.offer_price}</Text>
+                <TouchableOpacity style={styles.similarAddButton}>
+                  <Text style={styles.similarAddText}>ADD</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderBottomBar = () => (
+    <View style={styles.bottomBar}>
+      <TouchableOpacity onPress={handleCartPress} style={styles.cartIconButton}>
+        <Icon name="cart-outline" size={24} color="#333" />
+      </TouchableOpacity>
+
+      {quantity > 0 ? (
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={decrementQuantity} style={styles.quantityButton}>
+            <Icon name="minus" size={20} color="#FFF" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{quantity}</Text>
+          <TouchableOpacity onPress={incrementQuantity} style={styles.quantityButton}>
+            <Icon name="plus" size={20} color="#FFF" />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
+          <Text style={styles.addToCartText}>Add to Cart</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
+      
+      {renderHeader()}
+
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {renderImageGallery()}
+        {renderProductInfo()}
+        {renderOffers()}
+        {renderTags()}
+        {renderTabs()}
+        {renderSimilarProducts()}
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>You might also like</Text>
+        </View>
+      </ScrollView>
+
+      {renderBottomBar()}
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  scrollView: {
+    flex: 1,
+  },
+
+  // Header
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#FFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  headerButton: {
+    padding: 8,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+
+  // Image Gallery
+  imageGallery: {
+    backgroundColor: '#F0F9F0',
+    paddingVertical: 20,
+    position: 'relative',
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 10,
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  mainImageContainer: {
+    height: 320,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mainImage: {
+    width: SCREEN_WIDTH * 0.8,
+    height: 320,
+  },
+  thumbnailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 16,
+  },
+  thumbnail: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    overflow: 'hidden',
+    backgroundColor: '#FFF',
+  },
+  thumbnailActive: {
+    borderColor: '#4CAF50',
+  },
+  thumbnailImage: {
+    width: '100%',
+    height: '100%',
+  },
+
+  // Product Info
+  productInfo: {
+    backgroundColor: '#FFF',
+    padding: 16,
+    marginBottom: 8,
+  },
+  deliveryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8F5E9',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+  },
+  deliveryText: {
+    marginLeft: 4,
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#4CAF50',
+  },
+  productName: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 8,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  ratingBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  ratingText: {
+    marginLeft: 4,
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#FFF',
+  },
+  ratingCount: {
+    fontSize: 12,
+    color: '#666',
+  },
+  productUnit: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 12,
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  offerPrice: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#333',
+    marginRight: 8,
+  },
+  mrpPrice: {
+    fontSize: 16,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    marginRight: 8,
+  },
+  discountBadge: {
+    backgroundColor: '#FF5252',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  discountText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#FFF',
+  },
+  taxText: {
+    fontSize: 11,
+    color: '#999',
+  },
+
+  // Offers
+  offersSection: {
+    backgroundColor: '#FFF',
+    padding: 16,
+    marginBottom: 8,
+  },
+  offersHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  offersHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  offersHeaderText: {
+    marginLeft: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4CAF50',
+  },
+  offersList: {
+    gap: 8,
+  },
+  offerCard: {
+    flexDirection: 'row',
+    backgroundColor: '#E8F5E9',
+    borderWidth: 1,
+    borderColor: '#C8E6C9',
+    borderRadius: 8,
+    padding: 12,
+  },
+  offerContent: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  offerTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 2,
+  },
+  offerDescription: {
+    fontSize: 11,
+    color: '#666',
+  },
+
+  // Tags
+  tagsContainer: {
+    backgroundColor: '#FFF',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    marginBottom: 8,
+  },
+  brandLink: {
+    marginBottom: 12,
+  },
+  brandLinkText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#4CAF50',
+  },
+  tags: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  tag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    gap: 4,
+  },
+  tagOrange: {
+    backgroundColor: '#FFF3E0',
+  },
+  tagBlue: {
+    backgroundColor: '#E3F2FD',
+  },
+  tagTextOrange: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#F57C00',
+  },
+  tagTextBlue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#2196F3',
+  },
+
+  // Tabs
+  tabsContainer: {
+    backgroundColor: '#FFF',
+    marginBottom: 8,
+  },
+  tabsHeader: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    paddingHorizontal: 16,
+  },
+  tab: {
+    paddingVertical: 12,
+    marginRight: 24,
+  },
+  tabActive: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#4CAF50',
+  },
+  tabText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#666',
+  },
+  tabTextActive: {
+    color: '#4CAF50',
+  },
+  tabContent: {
+    padding: 16,
+  },
+
+  // Highlights
+  highlightsContainer: {
+    gap: 12,
+  },
+  highlightItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  highlightBullet: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#4CAF50',
+    marginTop: 6,
+    marginRight: 8,
+  },
+  highlightText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#333',
+    lineHeight: 20,
+  },
+
+  // Information
+  informationContainer: {
+    gap: 16,
+  },
+  infoSection: {
+    marginBottom: 8,
+  },
+  infoSectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 20,
+  },
+  nutritionGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  nutritionItem: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    padding: 12,
+    width: (SCREEN_WIDTH - 64) / 2,
+  },
+  nutritionLabel: {
+    fontSize: 11,
+    color: '#666',
+    marginBottom: 4,
+  },
+  nutritionValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
+  manufacturerInfo: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    padding: 12,
+    gap: 8,
+  },
+  manufacturerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  manufacturerLabel: {
+    fontSize: 12,
+    color: '#666',
+  },
+  manufacturerValue: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#333',
+  },
+
+  // Similar Products
+  similarSection: {
+    backgroundColor: '#FFF',
+    padding: 16,
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 16,
+  },
+  similarGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  similarCard: {
+    width: (SCREEN_WIDTH - 44) / 2,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    overflow: 'hidden',
+  },
+  similarImageContainer: {
+    height: 128,
+    backgroundColor: '#F5F5F5',
+  },
+  similarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  similarInfo: {
+    padding: 12,
+  },
+  similarName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  similarUnit: {
+    fontSize: 11,
+    color: '#666',
+    marginBottom: 8,
+  },
+  similarFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  similarPrice: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#333',
+  },
+  similarAddButton: {
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  similarAddText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#4CAF50',
+  },
+
+  // Footer
+  footer: {
+    padding: 16,
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#333',
+  },
+
+  // Bottom Bar
+  bottomBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  cartIconButton: {
+    padding: 12,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    borderRadius: 12,
+  },
+  quantityContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#4CAF50',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  quantityButton: {
+    padding: 8,
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFF',
+  },
+  addToCartButton: {
+    flex: 1,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  addToCartText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFF',
+  },
+});
 
 export default ProductDetailsScreen;
